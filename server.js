@@ -13,13 +13,16 @@ var router = new Router();
 
  
 router
-   .get('/team-todo', (ctx, next) => {
+   .get('/', (ctx, next) => {
         ctx.body = actionsHandler.loadPage();
     })
   .get('/action/query/todos', (ctx, next) => {
-    ctx.body = 'Hello todos!';
+        ctx.body = 'Hello todos!';
   })
   .post('/action/save/todos', (ctx, next) => {
+    let req = ctx.request;
+    console.log(req)
+    console.log(ctx.req)
     ctx.body = 'Hello save!';
   })
  

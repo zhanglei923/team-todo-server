@@ -1,0 +1,28 @@
+{
+  "name": "team-todo-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "koa": "^2.5.2",
+    "koa-router": "^7.4.0",
+    "koa-static": "5.0.0",
+    "koa-bodyparser": "4.2.1",
+    "moment": "^2.22.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhanglei923/team-todo-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhanglei923/team-todo-server/issues"
+  },
+  "homepage": "https://github.com/zhanglei923/team-todo-server#readme"
+}
