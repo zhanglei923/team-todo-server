@@ -27,7 +27,7 @@ let handler = {
             file = savePath + '/' + file
             var stat = fs.statSync(file)
             if (stat && stat.isFile()){
-                console.log(stat)
+                //console.log(stat)
                 results.push({
                     birthtimeMs: stat.birthtimeMs,
                     file
