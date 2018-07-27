@@ -20,8 +20,8 @@ router
     })
   .get('/action/todos', (ctx, next) => {
       let todos = todoActions.loadAllTodo();
-      console.log(todos)
-        ctx.body = JSON.stringify(todos)
+      //console.log(todos)
+      ctx.body = JSON.stringify(todos)
   })
   .post('/action/save/todos', (ctx, next) => {
     let req = ctx.request;
