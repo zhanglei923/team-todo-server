@@ -2,7 +2,7 @@ const fs = require('fs');
 const pathutil = require('path');
 const moment = require('moment');
 
-let MaxHistory = 7;
+let MaxHistory = 300;
 let savePath = pathutil.resolve(__dirname, '../../team-todo-data/')
 let counterPath = savePath + '/counter.json'; 
 console.log(savePath)
