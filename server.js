@@ -3,7 +3,7 @@ const Koa = require('koa');
 var Router = require('koa-router');
 var bodyParser = require('koa-bodyparser');
 
-const todoActions = require('./server/todoActions')
+const todoService = require('./server/todoService')
 const pageActions = require('./server/pageActions')
 
 var app = new Koa();
@@ -19,7 +19,7 @@ router
         ctx.body = pageActions.loadPage();
     })
   .get('/action/todos', (ctx, next) => {
-      let todos = todoActions.loadAllTodo();
+      let todos = todoService.loadAllTodo();
       //console.log(todos)
       ctx.body = JSON.stringify(todos)
   })
@@ -27,7 +27,7 @@ router
     let req = ctx.request;
     let data = req.body;
     //ctx.body = 'Hello save!'+data.length;
-    todoActions.saveAllTodo(data)
+    todoService.saveAllTodo(data)
     ctx.body = 'success'
   })
  

@@ -3,9 +3,14 @@ const pathutil = require('path');
 const moment = require('moment');
 
 let MaxHistory = 300;
+let prjName = 'default'
 let savePath = pathutil.resolve(__dirname, '../../team-todo-data/')
 let counterPath = savePath + '/counter.json'; 
 console.log(savePath)
+
+let getSavePath = () =>{
+    return savePath + '/' + prjName + '/'
+}
 
 let handler = {
     getCount: ()=>{
@@ -21,10 +26,10 @@ let handler = {
     },
     getHistoryList:()=>{
         var results = []
-        if(!fs.existsSync(savePath)) return;
-        var list = fs.readdirSync(savePath)
+        if(!fs.existsSync(getSavePath())) return;
+        var list = fs.readdirSync(getSavePath())
         list.forEach(function(file) {
-            file = savePath + '/' + file
+            file = getSavePath() + '/' + file
             var stat = fs.statSync(file)
             if (stat && stat.isFile()){
                 //console.log(stat)
@@ -68,7 +73,7 @@ let handler = {
     saveAllTodo:(todos)=>{
         let count = handler.getCount();
         count++;
-        let fpath = savePath + '/' + handler.getFileName(count);
+        let fpath = getSavePath() + '/' + handler.getFileName(count);
         fs.writeFileSync(fpath, JSON.stringify(todos)); 
         handler.setCount(count)
         //fs.readFileSync( 'utf8')
