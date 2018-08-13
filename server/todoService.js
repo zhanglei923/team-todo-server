@@ -2,7 +2,7 @@ const fs = require('fs');
 const pathutil = require('path');
 const moment = require('moment');
 
-let MaxHistory = 300;
+let MaxHistory = 100;
 let defaultProjectName = 'default'
 let currentProjectName;
 let dataPath = pathutil.resolve(__dirname, '../../team-todo-data/')
