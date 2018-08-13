@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Koa = require('koa');
+const pathutil = require('path');
 var Router = require('koa-router');
 var bodyParser = require('koa-bodyparser');
 
@@ -12,6 +13,12 @@ var router = new Router();
 // app.use(async ctx => {
 //   ctx.body = 'Hello World';
 // });
+let dataRootPath = pathutil.resolve(__dirname, '../team-todo-data/')
+if(!fs.existsSync(dataRootPath)){
+  fs.mkdirSync(dataRootPath)
+  fs.mkdirSync(dataRootPath+'/default')
+}
+console.log(dataRootPath)
 
  
 router
