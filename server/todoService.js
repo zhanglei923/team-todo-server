@@ -3,33 +3,39 @@ const pathutil = require('path');
 const moment = require('moment');
 
 let MaxHistory = 300;
-let prjName = 'default'
-let savePath = pathutil.resolve(__dirname, '../../team-todo-data/')
-let counterPath = savePath + '/counter.json'; 
-console.log(savePath)
+let defaultProjectName = 'default'
+let currentProjectName;
+let dataPath = pathutil.resolve(__dirname, '../../team-todo-data/')
+console.log(dataPath)
 
-let getSavePath = () =>{
-    return savePath + '/' + prjName + '/'
+let getSavePath = (prjName) =>{
+    return dataPath + '/' + prjName + '/'
 }
 
 let handler = {
-    getCount: ()=>{
+    getCountPath: (prjName)=>{
+        return getSavePath(prjName) + '/counter.json'; 
+    },
+    getCount: (prjName)=>{
         let count = 0;
+        let counterPath = handler.getCountPath(prjName)
         if(!fs.existsSync(counterPath)){
             fs.writeFileSync(counterPath, count);
         }
         count = fs.readFileSync(counterPath, 'utf8');
         return parseInt(count);
     },
-    setCount: (count)=>{
+    setCount: (prjName, count)=>{
+        let counterPath = handler.getCountPath(prjName)
         fs.writeFileSync(counterPath, count);
     },
-    getHistoryList:()=>{
+    getHistoryList:(prjName)=>{
+        console.log('gg', prjName)
         var results = []
-        if(!fs.existsSync(getSavePath())) return;
-        var list = fs.readdirSync(getSavePath())
+        if(!fs.existsSync(getSavePath(prjName))) return;
+        var list = fs.readdirSync(getSavePath(prjName))
         list.forEach(function(file) {
-            file = getSavePath() + '/' + file
+            file = getSavePath(prjName) + '/' + file
             var stat = fs.statSync(file)
             if (stat && stat.isFile()){
                 //console.log(stat)
@@ -45,8 +51,8 @@ let handler = {
         results.reverse();
         return results;
     },
-    cleanHistory: ()=>{
-        var results = handler.getHistoryList();
+    cleanHistory: (prjName)=>{
+        var results = handler.getHistoryList(prjName);
         var count = 0;
         results.forEach((todo)=>{
             count++;
@@ -60,8 +66,8 @@ let handler = {
         let filename = `todos-${count0x}.json`; 
         return filename;
     },
-    loadAllTodo:()=>{
-        let history = handler.getHistoryList();
+    loadAllTodo:(prjName)=>{
+        let history = handler.getHistoryList(prjName);
         if(history.length===0) return [];
         let latest = history[0]
         //let count = handler.getCount();
@@ -70,14 +76,14 @@ let handler = {
         let todos = fs.readFileSync(fpath, 'utf8');
         return JSON.parse(todos);
     },
-    saveAllTodo:(todos)=>{
-        let count = handler.getCount();
+    saveAllTodo:(prjName, todos)=>{
+        let count = handler.getCount(prjName);
         count++;
-        let fpath = getSavePath() + '/' + handler.getFileName(count);
+        let fpath = getSavePath(prjName) + '/' + handler.getFileName(count);
         fs.writeFileSync(fpath, JSON.stringify(todos)); 
-        handler.setCount(count)
+        handler.setCount(prjName, count)
         //fs.readFileSync( 'utf8')
-        handler.cleanHistory();
+        handler.cleanHistory(prjName);
     }
 };
 module.exports = handler;

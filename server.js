@@ -19,15 +19,22 @@ router
         ctx.body = pageActions.loadPage();
     })
   .get('/action/todos', (ctx, next) => {
-      let todos = todoService.loadAllTodo();
+    let query = ctx.query;
+    console.log(query)
+    let projectName = query.projectName;
+      let todos = todoService.loadAllTodo(projectName);
       //console.log(todos)
       ctx.body = JSON.stringify(todos)
   })
   .post('/action/save/todos', (ctx, next) => {
     let req = ctx.request;
     let data = req.body;
+    let tasks = data.tasks;
+    let projectName = data.projectName;
+    //console.log('save:',projectName)
+    if(!projectName) projectName = 'default';
     //ctx.body = 'Hello save!'+data.length;
-    todoService.saveAllTodo(data)
+    todoService.saveAllTodo(projectName, tasks)
     ctx.body = 'success'
   })
  
