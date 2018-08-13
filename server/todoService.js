@@ -37,8 +37,9 @@ let handler = {
         list.forEach(function(file) {
             file = getSavePath(prjName) + '/' + file
             var stat = fs.statSync(file)
-            if (stat && stat.isFile()){
+            if (stat && stat.isFile() && !/counter\.json$/.test(file)){
                 //console.log(stat)
+                console.log(file)
                 results.push({
                     birthtimeMs: stat.birthtimeMs,
                     file
