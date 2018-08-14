@@ -39,7 +39,7 @@ let handler = {
             var stat = fs.statSync(file)
             if (stat && stat.isFile() && !/counter\.json$/.test(file)){
                 //console.log(stat)
-                console.log(file)
+                //console.log(file)
                 results.push({
                     birthtimeMs: stat.birthtimeMs,
                     file
@@ -85,6 +85,26 @@ let handler = {
         handler.setCount(prjName, count)
         //fs.readFileSync( 'utf8')
         handler.cleanHistory(prjName);
+    },
+    loadProjects:()=>{
+        if(!fs.existsSync(dataPath)) return [];
+        var list = fs.readdirSync(dataPath)
+        let results = [];
+        list.forEach(function(file) {
+            var fpath = dataPath + '/' + file
+            var stat = fs.statSync(fpath)
+            if (stat && !stat.isFile()){
+                results.push(file)
+            }
+        })
+        console.log(results)
+        return results;
+    },
+    createProject:(projectName)=>{
+        let fpath = getSavePath(projectName);
+        if(fs.existsSync(fpath)) return 'exist';
+        fs.mkdirSync(fpath)
+        return 'succ';
     }
 };
 module.exports = handler;
