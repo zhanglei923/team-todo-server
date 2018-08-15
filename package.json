@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "blueimp-md5": "^2.10.0",
     "koa": "^2.5.2",
     "koa-bodyparser": "4.2.1",
     "koa-router": "^7.4.0",
