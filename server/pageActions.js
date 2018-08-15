@@ -3,8 +3,7 @@ let isLinux = /^\/home/.test(__dirname)
 let handler = {
     loadPage:()=>{
         let bundleUrl = isLinux ? "http://10.10.0.115/public/team-todo/bundle.js" : "http://127.0.0.1:3000/static/js/bundle.js"
-        let html = `
-            <!DOCTYPE html>
+        let html = `<!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="utf-8">
@@ -14,7 +13,7 @@ let handler = {
             </head>
             <body>
                 <div id="root"></div>
-                <script type="text/javascript" src="${bundleUrl}"></script></body>
+                <script type="text/javascript" src="${bundleUrl}?${Math.random()}"></script></body>
             </html>
         `
         return html;

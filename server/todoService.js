@@ -97,7 +97,7 @@ let handler = {
                 results.push(file)
             }
         })
-        console.log(results)
+        //console.log(results)
         return results;
     },
     createProject:(projectName)=>{
