@@ -72,7 +72,7 @@ let handler = {
         if(history.length===0) return [];
         let latest = history[0]
         //let count = handler.getCount();
-        let fpath = latest.file;
+        let fpath = getSavePath(prjName) + '/latest.json';//latest.file;
         if(!fs.existsSync(fpath)) return [];
         let todos = fs.readFileSync(fpath, 'utf8');
         return JSON.parse(todos);
@@ -82,6 +82,7 @@ let handler = {
         count++;
         let fpath = getSavePath(prjName) + '/' + handler.getFileName(count);
         fs.writeFileSync(fpath, JSON.stringify(todos)); 
+        fs.writeFileSync(getSavePath(prjName) + '/latest.json', JSON.stringify(todos)); 
         handler.setCount(prjName, count)
         //fs.readFileSync( 'utf8')
         handler.cleanHistory(prjName);
