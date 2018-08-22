@@ -30,7 +30,7 @@ let handler = {
         fs.writeFileSync(counterPath, count);
     },
     getHistoryList:(prjName)=>{
-        console.log('gg', prjName)
+        //console.log('gg', prjName)
         var results = []
         if(!fs.existsSync(getSavePath(prjName))) return;
         var list = fs.readdirSync(getSavePath(prjName))

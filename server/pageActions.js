@@ -13,6 +13,7 @@ let handler = {
             </head>
             <body>
                 <div id="root"></div>
+                <script src="http://localhost:8097"></script>
                 <script type="text/javascript" src="${bundleUrl}?${Math.random()}"></script></body>
             </html>
         `
