@@ -6,7 +6,7 @@ var bodyParser = require('koa-bodyparser');
 const session = require('koa-session');
 const mkdir = require('make-dir')
 
-const dataService = require('./server/dataService')
+const dataService = require('./server/longbow-data-service')
 const pageActions = require('./server/pageActions')
 
 var app = new Koa();

@@ -4,9 +4,17 @@ const moment = require('moment');
 const mkdir = require('make-dir')
 
 //config
-let MaxHistory = 100;
-let defaultProjectName = 'default'
-let dataPath = pathutil.resolve(__dirname, '../../team-data/')
+let configpath = pathutil.resolve(__dirname, './longbow-data-service-config.json')
+if(!fs.existsSync(configpath)){
+    throw "can not find config file: 'longbow-data-service-config.json'"
+}
+let config = fs.readFileSync(configpath, 'utf8')
+console.log(config)
+config = JSON.parse(config)
+let MaxHistory = config.maxHistory?config.maxHistory:100;
+let defaultProjectName = config.defaultProjectName?config.defaultProjectName:'default';
+let dataFolder = config.dataFolder?config.dataFolder:'./longbow-data-service-db';
+let dataPath = pathutil.resolve(__dirname, dataFolder)
 
 
 mkdir.sync(dataPath)
