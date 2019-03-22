@@ -100,7 +100,7 @@ let handler = {
     loadProjects:(repoName)=>{
         let repoPath = pathutil.resolve(dataPath, repoName)
 
-        if(!fs.existsSync(repoPath)) return ['default'];
+        if(!fs.existsSync(repoPath)) return [defaultProjectName];
         var list = fs.readdirSync(repoPath)
         let results = [];
         list.forEach(function(file) {
@@ -110,7 +110,7 @@ let handler = {
                 results.push(file)
             }
         })
-        if(results.length ===0) results = ['default']
+        if(results.length ===0) results = [defaultProjectName]
         //console.log(results)
         return results;
     },
