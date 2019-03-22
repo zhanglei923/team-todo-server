@@ -3,10 +3,12 @@ const pathutil = require('path');
 const moment = require('moment');
 const mkdir = require('make-dir')
 
+//config
 let MaxHistory = 100;
 let defaultProjectName = 'default'
-let currentProjectName;
 let dataPath = pathutil.resolve(__dirname, '../../team-data/')
+
+
 mkdir.sync(dataPath)
 console.log(dataPath)
 
