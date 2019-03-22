@@ -1,41 +1,50 @@
 const fs = require('fs');
 const pathutil = require('path');
 const moment = require('moment');
+const mkdir = require('make-dir')
 
 let MaxHistory = 100;
 let defaultProjectName = 'default'
 let currentProjectName;
-let dataPath = pathutil.resolve(__dirname, '../../team-todo-data/')
+let dataPath = pathutil.resolve(__dirname, '../../team-data/')
+mkdir.sync(dataPath)
 console.log(dataPath)
 
-let getSavePath = (prjName) =>{
-    return dataPath + '/' + prjName + '/'
+let getSavePath = (repoName, prjName) =>{
+    let path = dataPath + '/' + repoName + '/' + prjName + '/';
+    mkdir.sync(path);
+    return path;
 }
 
 let handler = {
-    getCountPath: (prjName)=>{
-        return getSavePath(prjName) + '/counter.json'; 
+    getDataPath:()=>{
+        return dataPath;
     },
-    getCount: (prjName)=>{
+    getCountPath: (repoName, prjName)=>{
+        return getSavePath(repoName, prjName) + '/counter.json'; 
+    },
+    getCount: (repoName, prjName)=>{
         let count = 0;
-        let counterPath = handler.getCountPath(prjName)
+        let counterPath = handler.getCountPath(repoName, prjName)
         if(!fs.existsSync(counterPath)){
             fs.writeFileSync(counterPath, count);
         }
         count = fs.readFileSync(counterPath, 'utf8');
         return parseInt(count);
     },
-    setCount: (prjName, count)=>{
-        let counterPath = handler.getCountPath(prjName)
+    setCount: (repoName, prjName, count)=>{
+        let counterPath = handler.getCountPath(repoName, prjName)
         fs.writeFileSync(counterPath, count);
     },
-    getHistoryList:(prjName)=>{
+    getHistoryList:(repoName, prjName)=>{
         //console.log('gg', prjName)
         var results = []
-        if(!fs.existsSync(getSavePath(prjName))) return;
-        var list = fs.readdirSync(getSavePath(prjName))
+        let savepath = getSavePath(repoName, prjName);
+        console.log('savepath',savepath)
+        if(!fs.existsSync(getSavePath(repoName, prjName))) return;
+        var list = fs.readdirSync(getSavePath(repoName, prjName))
         list.forEach(function(file) {
-            file = getSavePath(prjName) + '/' + file
+            file = getSavePath(repoName, prjName) + '/' + file
             var stat = fs.statSync(file)
             if (stat && stat.isFile() && !/counter\.json$/.test(file)){
                 //console.log(stat)
@@ -52,8 +61,8 @@ let handler = {
         results.reverse();
         return results;
     },
-    cleanHistory: (prjName)=>{
-        var results = handler.getHistoryList(prjName);
+    cleanHistory: (repoName, prjName)=>{
+        var results = handler.getHistoryList(repoName, prjName);
         var count = 0;
         results.forEach((todo)=>{
             count++;
@@ -67,41 +76,45 @@ let handler = {
         let filename = `todos-${count0x}.json`; 
         return filename;
     },
-    loadAllTodo:(prjName)=>{
-        let history = handler.getHistoryList(prjName);
+    loadAllTodo:(repoName, prjName)=>{
+        let history = handler.getHistoryList(repoName, prjName);
         if(history.length===0) return [];
         let latest = history[0]
         //let count = handler.getCount();
-        let fpath = getSavePath(prjName) + '/latest.json';//latest.file;
+        let fpath = getSavePath(repoName, prjName) + '/latest.json';//latest.file;
         if(!fs.existsSync(fpath)) return [];
         let todos = fs.readFileSync(fpath, 'utf8');
         return JSON.parse(todos);
     },
-    saveAllTodo:(prjName, todos)=>{
-        let count = handler.getCount(prjName);
+    saveAllTodo:(repoName, prjName, todos)=>{
+        let count = handler.getCount(repoName, prjName);
         count++;
-        let fpath = getSavePath(prjName) + '/' + handler.getFileName(count);
-        fs.writeFileSync(fpath, JSON.stringify(todos)); 
-        fs.writeFileSync(getSavePath(prjName) + '/latest.json', JSON.stringify(todos)); 
-        handler.setCount(prjName, count)
+        let fpath = getSavePath(repoName, prjName) + '/' + handler.getFileName(count);
+        let todostr = JSON.stringify(todos);
+        fs.writeFileSync(fpath, todostr); 
+        fs.writeFileSync(getSavePath(repoName, prjName) + '/latest.json', todostr); 
+        handler.setCount(repoName, prjName, count)
         //fs.readFileSync( 'utf8')
-        handler.cleanHistory(prjName);
+        handler.cleanHistory(repoName, prjName);
     },
-    loadProjects:()=>{
-        if(!fs.existsSync(dataPath)) return [];
-        var list = fs.readdirSync(dataPath)
+    loadProjects:(repoName)=>{
+        let repoPath = pathutil.resolve(dataPath, repoName)
+
+        if(!fs.existsSync(repoPath)) return ['default'];
+        var list = fs.readdirSync(repoPath)
         let results = [];
         list.forEach(function(file) {
-            var fpath = dataPath + '/' + file
+            var fpath = repoPath + '/' + file
             var stat = fs.statSync(fpath)
             if (stat && !stat.isFile()){
                 results.push(file)
             }
         })
+        if(results.length ===0) results = ['default']
         //console.log(results)
         return results;
     },
-    createProject:(projectName)=>{
+    createProject:(repoName, projectName)=>{
         let fpath = getSavePath(projectName);
         if(fs.existsSync(fpath)) return 'exist';
         fs.mkdirSync(fpath)

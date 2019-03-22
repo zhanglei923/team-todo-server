@@ -4,6 +4,7 @@ const pathutil = require('path');
 var Router = require('koa-router');
 var bodyParser = require('koa-bodyparser');
 const session = require('koa-session');
+const mkdir = require('make-dir')
 
 const todoService = require('./server/todoService')
 const pageActions = require('./server/pageActions')
@@ -30,12 +31,7 @@ app.use(session(CONFIG, app));
 // app.use(async ctx => {
 //   ctx.body = 'Hello World';
 // });
-let dataRootPath = pathutil.resolve(__dirname, '../team-todo-data/')
-if(!fs.existsSync(dataRootPath)){
-  fs.mkdirSync(dataRootPath)
-  fs.mkdirSync(dataRootPath+'/default')
-}
-console.log(dataRootPath)
+let dataRootPath = todoService.getDataPath();
 
  
 router
@@ -45,21 +41,25 @@ router
         ctx.body = pageActions.loadPage();
     })
     .get('/action/projects', (ctx, next) => {
-      let projects = todoService.loadProjects();
+      let query = ctx.query;
+      let reponsitoryName = query.reponsitoryName;
+      let projects = todoService.loadProjects(reponsitoryName);
       ctx.body=projects;
     })
     .post('/action/create/project', (ctx, next) => {
       let req = ctx.request;
       let data = req.body;
+      let reponsitoryName = data.reponsitoryName;
       let projectName = data.projectName;
-      let succ = todoService.createProject(projectName)
+      let succ = todoService.createProject(reponsitoryName, projectName)
       ctx.body=succ;
     })
   .get('/action/todos', (ctx, next) => {
     let query = ctx.query;
     //console.log(query)
+    let reponsitoryName = query.reponsitoryName;
     let projectName = query.projectName;
-      let todos = todoService.loadAllTodo(projectName);
+      let todos = todoService.loadAllTodo(reponsitoryName, projectName);
       //console.log(todos)
       ctx.body = JSON.stringify(todos)
   })
@@ -67,11 +67,12 @@ router
     let req = ctx.request;
     let data = req.body;
     let tasks = data.tasks;
+    let reponsitoryName = data.reponsitoryName;
     let projectName = data.projectName;
     //console.log('save:',projectName)
     if(!projectName) projectName = 'default';
     //ctx.body = 'Hello save!'+data.length;
-    todoService.saveAllTodo(projectName, tasks)
+    todoService.saveAllTodo(reponsitoryName, projectName, tasks)
     ctx.body = 'success'
   })
  
