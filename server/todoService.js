@@ -115,7 +115,7 @@ let handler = {
         return results;
     },
     createProject:(repoName, projectName)=>{
-        let fpath = getSavePath(projectName);
+        let fpath = getSavePath(repoName, projectName);
         if(fs.existsSync(fpath)) return 'exist';
         fs.mkdirSync(fpath)
         return 'succ';
