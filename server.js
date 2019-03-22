@@ -6,7 +6,7 @@ var bodyParser = require('koa-bodyparser');
 const session = require('koa-session');
 const mkdir = require('make-dir')
 
-const todoService = require('./server/todoService')
+const dataService = require('./server/dataService')
 const pageActions = require('./server/pageActions')
 
 var app = new Koa();
@@ -31,7 +31,7 @@ app.use(session(CONFIG, app));
 // app.use(async ctx => {
 //   ctx.body = 'Hello World';
 // });
-let dataRootPath = todoService.getDataPath();
+let dataRootPath = dataService.getDataPath();
 
  
 router
@@ -43,7 +43,7 @@ router
     .get('/action/projects', (ctx, next) => {
       let query = ctx.query;
       let reponsitoryName = query.reponsitoryName;
-      let projects = todoService.loadProjects(reponsitoryName);
+      let projects = dataService.loadProjects(reponsitoryName);
       ctx.body=projects;
     })
     .post('/action/create/project', (ctx, next) => {
@@ -51,7 +51,7 @@ router
       let data = req.body;
       let reponsitoryName = data.reponsitoryName;
       let projectName = data.projectName;
-      let succ = todoService.createProject(reponsitoryName, projectName)
+      let succ = dataService.createProject(reponsitoryName, projectName)
       ctx.body=succ;
     })
   .get('/action/todos', (ctx, next) => {
@@ -59,7 +59,7 @@ router
     //console.log(query)
     let reponsitoryName = query.reponsitoryName;
     let projectName = query.projectName;
-      let todos = todoService.loadAllTodo(reponsitoryName, projectName);
+      let todos = dataService.loadAllTodo(reponsitoryName, projectName);
       //console.log(todos)
       ctx.body = JSON.stringify(todos)
   })
@@ -72,7 +72,7 @@ router
     //console.log('save:',projectName)
     if(!projectName) projectName = 'default';
     //ctx.body = 'Hello save!'+data.length;
-    todoService.saveAllTodo(reponsitoryName, projectName, tasks)
+    dataService.saveAllTodo(reponsitoryName, projectName, tasks)
     ctx.body = 'success'
   })
  
