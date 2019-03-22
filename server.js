@@ -6,7 +6,7 @@ var bodyParser = require('koa-bodyparser');
 const session = require('koa-session');
 const mkdir = require('make-dir')
 
-const dataService = require('./server/longbow-data-service')
+const dataService = require('./server/longbow-local-db')
 const pageActions = require('./server/pageActions')
 
 var app = new Koa();
@@ -59,7 +59,7 @@ router
     //console.log(query)
     let reponsitoryName = query.reponsitoryName;
     let projectName = query.projectName;
-      let todos = dataService.loadAllTodo(reponsitoryName, projectName);
+      let todos = dataService.loadAllData(reponsitoryName, projectName);
       //console.log(todos)
       ctx.body = JSON.stringify(todos)
   })
@@ -72,7 +72,7 @@ router
     //console.log('save:',projectName)
     if(!projectName) projectName = 'default';
     //ctx.body = 'Hello save!'+data.length;
-    dataService.saveAllTodo(reponsitoryName, projectName, tasks)
+    dataService.saveAllData(reponsitoryName, projectName, tasks)
     ctx.body = 'success'
   })
  
