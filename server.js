@@ -4,6 +4,7 @@ const pathutil = require('path');
 var Router = require('koa-router');
 var bodyParser = require('koa-bodyparser');
 const session = require('koa-session');
+const compress =require('koa-compress');
 const mkdir = require('make-dir')
 
 const dataService = require('./server/longbow-local-db')
@@ -79,6 +80,7 @@ router
 app
   .use(bodyParser())
   .use(router.routes())
+  .use(compress({threshold:2048}))
   .use(router.allowedMethods());
 
 
