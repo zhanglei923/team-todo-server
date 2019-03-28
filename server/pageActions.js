@@ -2,7 +2,7 @@ const moment = require('moment');
 let isLinux = /^\/home/.test(__dirname)
 let handler = {
     loadPage:()=>{
-        let bundleUrl = isLinux ? "http://10.10.0.115/public/team-todo/bundle.js" : "http://127.0.0.1:3000/static/js/bundle.js"
+        let bundleUrl = isLinux ? "http://10.10.0.115/public/team-todo" : "http://127.0.0.1:3000/static/js"
         let html = `<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -13,9 +13,11 @@ let handler = {
             </head>
             <body>
                 <div id="root"></div>
-                <script src="http://localhost:8097"></script>
-                <script type="text/javascript" src="${bundleUrl}?${Math.random()}"></script></body>
-            </html>
+                <script type="text/javascript" src="${bundleUrl}/bundle.js?${Math.random()}"></script></body>
+                <script type="text/javascript" src="${bundleUrl}/0.chunk.js"></script></body>
+                <script type="text/javascript" src="${bundleUrl}/main.chunk.js"></script></body>
+    
+                </html>
         `
         return html;
     }
