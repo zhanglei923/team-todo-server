@@ -7,4 +7,8 @@ How to:
 - npm install
 - node server
 
+visit: 
+http://localhost:3005/develop/index.html
+http://localhost:3005/public/index.html
+
 Under the MIT Liscense.
