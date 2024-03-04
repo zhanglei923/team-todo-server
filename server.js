@@ -81,7 +81,7 @@ router
    * {
         "reponsitoryName":"team-todo",
         "projectName":"222",
-            "tasks":[
+            "todos":[
               {"id":111}
             ]
      }
@@ -90,13 +90,13 @@ router
   .post('/action/save/todos', (ctx, next) => {
     let req = ctx.request;
     let data = req.body;
-    let tasks = data.tasks;
+    let todos = data.todos;
     let reponsitoryName = data.reponsitoryName;
     let projectName = data.projectName;
     //console.log('save:',projectName)
     if(!projectName) projectName = 'default';
     //ctx.body = 'Hello save!'+data.length;
-    dataService.saveAllData(reponsitoryName, projectName, tasks)
+    dataService.saveAllData(reponsitoryName, projectName, todos)
     ctx.body = 'success'
   })
  
