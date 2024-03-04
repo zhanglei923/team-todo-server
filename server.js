@@ -58,6 +58,10 @@ router
       let succ = dataService.createProject(reponsitoryName, projectName)
       ctx.body=succ;
     })
+    /**
+     * URL: http://localhost:3005/action/todos?reponsitoryName=team-todo&projectName=222
+     * 
+     */
   .get('/action/todos', (ctx, next) => {
     let query = ctx.query;
     //console.log(query)
