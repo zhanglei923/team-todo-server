@@ -117,7 +117,10 @@ let handler = {
         let count = handler.getCount(repoName, prjName);
         count++;
         let fpath = getSavePath(repoName, prjName) + '/' + handler.getFileName(count);
-        if(!todos)todos={}
+        if(!todos)todos=[];
+        todos.forEach((todo, i)=>{
+            if(!todo.timestamp_created) todo.timestamp_created = Date.now();
+        });
         let todostr = JSON.stringify(todos);
         fs.writeFileSync(fpath, todostr); 
         fs.writeFileSync(getSavePath(repoName, prjName) + '/latest.json', todostr); 
