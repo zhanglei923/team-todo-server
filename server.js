@@ -5,7 +5,8 @@ var Router = require('koa-router');
 var bodyParser = require('koa-bodyparser');
 const session = require('koa-session');
 const compress =require('koa-compress');
-const staticFiles = require('koa-static')
+const staticFiles = require('koa-static');
+const cors = require('@koa/cors');
 const mkdir = require('make-dir')
 
 const dataService = require('./server/longbow-local-db')
@@ -29,6 +30,7 @@ const CONFIG = {
   renew: false, /** (boolean) renew session when session is nearly expired, so we can always keep user logged in. (default is false)*/
 };
 app.use(session(CONFIG, app));
+app.use(cors());
 
 // app.use(async ctx => {
 //   ctx.body = 'Hello World';
