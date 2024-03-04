@@ -8,7 +8,7 @@ const fs = require('fs');
 const pathutil = require('path');
 const moment = require('moment');
 const mkdir = require('make-dir')
-const _ = require('lodash')
+const _ = require('lodash');
 
 //config
 let configpath = pathutil.resolve(__dirname, './longbow-local-db.json')
@@ -44,14 +44,16 @@ let handler = {
         let count = 0;
         let counterPath = handler.getCountPath(repoName, prjName)
         if(!fs.existsSync(counterPath)){
-            fs.writeFileSync(counterPath, count);
+            fs.writeFileSync(counterPath, `${count}`);
         }
         count = fs.readFileSync(counterPath, 'utf8');
         return parseInt(count);
     },
     setCount: (repoName, prjName, count)=>{
         let counterPath = handler.getCountPath(repoName, prjName)
-        fs.writeFileSync(counterPath, count);
+        let pathinfo = pathutil.parse(counterPath);
+        mkdir.sync(pathinfo.dir);
+        fs.writeFileSync(counterPath, `${count}`);
     },
     getHistoryList:(repoName, prjName)=>{
         //console.log('gg', prjName)

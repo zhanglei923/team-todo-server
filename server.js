@@ -72,6 +72,17 @@ router
       //console.log(todos)
       ctx.body = JSON.stringify(todos)
   })
+  /**
+   * URL: http://localhost:3005/action/save/todos
+   * {
+        "reponsitoryName":"team-todo",
+        "projectName":"222",
+            "tasks":[
+              {"id":111}
+            ]
+     }
+   * 
+   */
   .post('/action/save/todos', (ctx, next) => {
     let req = ctx.request;
     let data = req.body;
