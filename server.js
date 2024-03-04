@@ -63,6 +63,11 @@ router
     //console.log(query)
     let reponsitoryName = query.reponsitoryName;
     let projectName = query.projectName;
+    if(!projectName){
+      ctx.body = `projectName is null`
+      ctx.res.statusCode = 500;
+      return;
+    }
       let todos = dataService.loadAllData(reponsitoryName, projectName);
       //console.log(todos)
       ctx.body = JSON.stringify(todos)
